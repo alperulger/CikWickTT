@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _jumpForce = 10f;
     [SerializeField] private KeyCode _jumpKey = KeyCode.Space;
     [SerializeField] private float _jumpCooldown = 1f;
-
+    [SerializeField] private float _airMultiplier=1f;
+    [SerializeField] private float _airDrag=1f;
     private bool _canJump = true; // Indicates whether the player can jump or not
 
     [Header("Sliding Settings")]
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _playerHeight = 2f;
     [SerializeField] private LayerMask _groundLayer; // Layer mask to identify ground objects
     [SerializeField] private float _groundDrag;
+    private StateController _stateController;
     private Rigidbody _playerRigidbody;
     private float _horizontalInput, _verticalInput;
     private Vector3 _movementDirection;
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        _stateController = GetComponent<StateController>();
         _playerRigidbody = GetComponent<Rigidbody>();
         _playerRigidbody.freezeRotation = true; // Prevents the player from rotating due to physics interactions
 
@@ -41,6 +44,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         SetInputs();
+        SetStates();
         SetPlayerDrag();
         LimitPlayerSpeed();
     }
@@ -79,15 +83,14 @@ public class PlayerController : MonoBehaviour
 
     private void SetPlayerDrag()
     {
+        _playerRigidbody.linearDamping=_stateController.GetCurrentState() switch
+        {
+            PlayerState.Move=>_groundDrag,
+            PlayerState.Slide=> _slideDrag,
+            PlayerState.jump=>_airDrag,
+            _ => _playerRigidbody.linearDamping
+        };
 
-        if (_isSliding)
-        {
-            _playerRigidbody.linearDamping = _slideDrag;
-        }
-        else
-        {
-            _playerRigidbody.linearDamping = _groundDrag;
-        }
 
 
     }
@@ -109,18 +112,43 @@ public class PlayerController : MonoBehaviour
         _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
 
     }
+    private void SetStates()
+    {
+        var movementDirection = GetMovementDirection();
+        var isGrounded = IsGrounded();
+        var isSliding=IsSliding();
+        var currentState = _stateController.GetCurrentState();
+        var newState= currentState switch
+        {
+          _ when movementDirection==Vector3.zero && isGrounded && !isSliding=>PlayerState.Idle,
+          _ when movementDirection!= Vector3.zero && isGrounded && !isSliding=>PlayerState.Move,
+          _ when movementDirection!= Vector3.zero && isGrounded && isSliding=>PlayerState.Slide,
+          _ when movementDirection!= Vector3.zero && isGrounded && isSliding=>PlayerState.SlideIdle,
+          _ when  !_canJump && !isGrounded=>PlayerState.jump,
+          _ =>currentState
+
+        };
+        if(newState!=currentState)
+        {
+            _stateController.ChangeState(newState);
+        }
+        Debug.Log("Player State:"+newState);
+
+    }
     private void SetPlayerMovement()
     {
+
         _movementDirection = _orientationTransform.forward * _verticalInput + _orientationTransform.right * _horizontalInput;
+        Debug.Log("OrientationForward" + _orientationTransform.forward + "_orientationTransform.right " + _orientationTransform.right);
         // transform.position += _movementDirection.normalized * 5f * Time.deltaTime;  // Static movement without physics
-        if (_isSliding)
+        float forceMultiplayer=_stateController.GetCurrentState() switch
         {
-            _playerRigidbody.AddForce(_movementDirection.normalized * _movementSpeed * _slideMultiplier, ForceMode.Force);//More realistic movement using physics
-        }
-        else
-        {
-            _playerRigidbody.AddForce(_movementDirection.normalized * _movementSpeed, ForceMode.Force);//More realistic movement using physics
-        }
+            PlayerState.Move=>1f,
+            PlayerState.Slide=>_slideMultiplier,
+            PlayerState.jump=>_airMultiplier,
+            _ => 1f
+        };
+       _playerRigidbody.AddForce(_movementDirection.normalized * _movementSpeed * forceMultiplayer, ForceMode.Force);//More realistic movement using physics
     }
     private void ResetJumping()
     {
@@ -132,6 +160,14 @@ public class PlayerController : MonoBehaviour
         // Check if the player is grounded using a raycast
         return Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.2f, _groundLayer);
 
+    }
+    private Vector3 GetMovementDirection()
+    {
+        return _movementDirection.normalized;
+    }
+    private bool IsSliding()
+    {
+        return _isSliding;
     }
 
 
