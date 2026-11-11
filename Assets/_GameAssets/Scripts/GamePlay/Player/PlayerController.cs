@@ -1,8 +1,10 @@
 
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public event Action  OnPlayerJumped;
     [Header("References")]
     [SerializeField] private Transform _orientationTransform;
     [Header("Movement Settings")]
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _groundDrag;
     private StateController _stateController;
     private Rigidbody _playerRigidbody;
+    private float _startingMovementSpeed,_startingJumpForce;
     private float _horizontalInput, _verticalInput;
     private Vector3 _movementDirection;
     private bool _isSliding = false; // Indicates whether the player is currently sliding or not
@@ -39,8 +42,11 @@ public class PlayerController : MonoBehaviour
         _stateController = GetComponent<StateController>();
         _playerRigidbody = GetComponent<Rigidbody>();
         _playerRigidbody.freezeRotation = true; // Prevents the player from rotating due to physics interactions
+        _startingMovementSpeed=_movementSpeed;
+        _startingJumpForce=_jumpForce;
 
     }
+   
     private void Update()
     {
         SetInputs();
@@ -106,6 +112,7 @@ public class PlayerController : MonoBehaviour
     }
     private void SetPlayerJumping()
     {
+        OnPlayerJumped.Invoke(); // Notify subscribers that the player has jumped
 
         // Apply an upward force to the player for jumping
         _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z); // Reset vertical velocity before jumping
@@ -139,7 +146,7 @@ public class PlayerController : MonoBehaviour
     {
 
         _movementDirection = _orientationTransform.forward * _verticalInput + _orientationTransform.right * _horizontalInput;
-        Debug.Log("OrientationForward" + _orientationTransform.forward + "_orientationTransform.right " + _orientationTransform.right);
+        //Debug.Log("OrientationForward" + _orientationTransform.forward + "_orientationTransform.right " + _orientationTransform.right);
         // transform.position += _movementDirection.normalized * 5f * Time.deltaTime;  // Static movement without physics
         float forceMultiplayer=_stateController.GetCurrentState() switch
         {
@@ -154,6 +161,7 @@ public class PlayerController : MonoBehaviour
     {
         _canJump = true; // Allow the player to jump again
     }
+    #region Helper Functions
     private bool IsGrounded()
     {
 
@@ -169,6 +177,29 @@ public class PlayerController : MonoBehaviour
     {
         return _isSliding;
     }
+
+    public void SetMovementSpeed(float speed,float duration)
+    {
+        _movementSpeed+=speed;
+        Invoke(nameof(ResetMovementSpeed),duration);
+    }
+    private void ResetMovementSpeed()
+    {
+        _movementSpeed=_startingMovementSpeed;
+    }
+
+      public void SetJumpForce(float force,float duration)
+    {
+        _jumpForce+=force;
+        Invoke(nameof(ResetJumpForce),duration);
+    }
+
+      private void ResetJumpForce()
+    {
+        _jumpForce=_startingJumpForce;
+    }
+    
+    #endregion
 
 
 }
