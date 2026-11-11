@@ -29,11 +29,12 @@ public class PlayerAnimationController : MonoBehaviour
      private void PlayerController_OnPlayerJumped()
     {
         _playerAnimator.SetBool(Consts.PlayerAnimations.IS_JUMPING,true);
+        Invoke(nameof(ResetJumping),0.5f);
     }
     private void ResetJumping()
     {
         _playerAnimator.SetBool(Consts.PlayerAnimations.IS_JUMPING,false);
-        Invoke(nameof(ResetJumping),0.5f);
+       
     }
     private void SetPlayerAnimations()
     {
