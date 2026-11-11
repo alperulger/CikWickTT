@@ -160,6 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 97831728}
   - component: {fileID: 97831727}
+  - component: {fileID: 97831729}
   m_Layer: 0
   m_Name: GoldWheat
   m_TagString: GoldWheat
@@ -204,6 +205,20 @@ Transform:
   - {fileID: 6270977257579153497}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &97831729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97831726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373df56a075809c489f230ecf59c6502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wheatDesignSO: {fileID: 11400000, guid: 9ac5cb82c57143c43b0855d59c1b726a, type: 2}
+  _playerController: {fileID: 1401892149}
 --- !u!1 &134646256
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,6 +902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1096205842}
   - component: {fileID: 1096205841}
+  - component: {fileID: 1096205843}
   m_Layer: 0
   m_Name: RottenWheat
   m_TagString: RottenWheat
@@ -931,6 +947,20 @@ Transform:
   - {fileID: 1128424428}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1096205843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096205840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0fb89e7865863640a822b2f8c484171, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wheatDesignSO: {fileID: 11400000, guid: 1572fcae71b721f40868ba8e048ac1df, type: 2}
+  _playerController: {fileID: 1401892149}
 --- !u!1 &1128424427
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,6 +1166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1258816013}
   - component: {fileID: 1258816012}
+  - component: {fileID: 1258816014}
   m_Layer: 0
   m_Name: HolyWheat
   m_TagString: HollyWheat
@@ -1180,6 +1211,20 @@ Transform:
   - {fileID: 1925571873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1258816014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258816011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d174475d17d154cb7b00e190229435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wheatDesignSO: {fileID: 11400000, guid: 1f0a0b8f47ac1ab4ca14196e1c201bc2, type: 2}
+  _playerController: {fileID: 1401892149}
 --- !u!1 &1264049612
 GameObject:
   m_ObjectHideFlags: 0
