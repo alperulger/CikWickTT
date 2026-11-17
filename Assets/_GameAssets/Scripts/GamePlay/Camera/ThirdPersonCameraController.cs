@@ -11,6 +11,11 @@ public class ThirdPersonCameraController : MonoBehaviour
     [SerializeField] private float _rotationSpeed = 5f;
     private void Update()
     {
+        if(GameManager.Instance.GetCurrentGameState()!=GameState.Play && GameManager.Instance.GetCurrentGameState()!=GameState.Resume)
+        {
+            return;
+            
+        }
         Vector3 viewDir = _playerTransform.position - new Vector3(transform.position.x, _playerTransform.position.y, transform.position.z);
         _orienationTransform.forward = viewDir.normalized;
         float horizontalInput = Input.GetAxis("Horizontal");
