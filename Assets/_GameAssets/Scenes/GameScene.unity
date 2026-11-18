@@ -738,6 +738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 3
+  _playerHealthUI: {fileID: 1502706765}
 --- !u!4 &205372603
 Transform:
   m_ObjectHideFlags: 0
@@ -2910,7 +2911,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: a3a3dc3ffa1dfb649b45552d7b61fd26, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9056521384845251999, guid: 69ef6ec9a0720ab4181a382ad028a657, type: 3}
+    - {fileID: 5225249656487192350, guid: 69ef6ec9a0720ab4181a382ad028a657, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69ef6ec9a0720ab4181a382ad028a657, type: 3}
@@ -5333,7 +5336,7 @@ GameObject:
   - component: {fileID: 1401892151}
   - component: {fileID: 1401892152}
   - component: {fileID: 1401892153}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5472,6 +5475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19ec6300d8e93e41afd4fcbf924ea40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerVisualTransform: {fileID: 6583551516081914700}
 --- !u!1 &1423415060
 GameObject:
   m_ObjectHideFlags: 0
