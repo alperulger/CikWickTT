@@ -28,6 +28,14 @@ public class Consts
       
  
     }
+       public struct Layers
+    {
+        public const string GROUND_LAYER = "Ground";
+        public const string FLOOR_LAYER="Floor";
+      
+ 
+    }
+
 
 
 
