@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using UnityEditor.Analytics;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.AI;
 
 public class CatController : MonoBehaviour
 {
+    public event Action OnCatCatched;
     [Header("References")]
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private Transform _playerTransform;
@@ -49,6 +51,7 @@ public class CatController : MonoBehaviour
     }
     private void SetChaseMovement()
     {
+        isChasing=true;
         Vector3 directionToPlayer=(_playerTransform.position-transform.position).normalized;
         Vector3 offsetPosition=_playerTransform.position-directionToPlayer*_chaseDistanceThreshold;
         _catAgent.SetDestination(offsetPosition);
@@ -59,6 +62,7 @@ public class CatController : MonoBehaviour
             //Catched the chick
             _catStateController.ChangeState(CatState.Attacking);
             isChasing=false;
+            OnCatCatched?.Invoke();
         }
     }
     private void SetPatrolMovement()
