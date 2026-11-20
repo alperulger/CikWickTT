@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float _delay=0.5f;
     
     private GameState _currentGameState;
+    private bool _isCatCatched;
         private void Awake()
     {
      
@@ -32,8 +33,13 @@ public class GameManager : MonoBehaviour
 
     private void CatController_OnCatCatched()
     {
-        _playerHealthUI.AnimateDamageForAll();
+        if(!_isCatCatched)
+        {
+             _playerHealthUI.AnimateDamageForAll();
        StartCoroutine(OnGameOver());
+         CameraShake.Instance.ShakeCamera(1.5f,2f,0.5f);
+        }
+       _isCatCatched=true;
        
     }
 
