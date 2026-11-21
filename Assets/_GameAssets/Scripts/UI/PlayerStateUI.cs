@@ -3,6 +3,7 @@ using System.Collections;
 using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ public class PlayerStateUI : MonoBehaviour
     [SerializeField] private RectTransform _boosterSpeedTransform;
     [SerializeField] private RectTransform _boosterJumpTransform;
     [SerializeField] private RectTransform _boosterSlowTransform;
+    [SerializeField] private PlayableDirector _playableDirector;
     [Header("Images")]
     [SerializeField] private Image _goldBoosterWheatImage;
     [SerializeField] private Image _holyBoosterWheatImage;
@@ -43,8 +45,14 @@ public class PlayerStateUI : MonoBehaviour
     }
     private void Start()
     {
-        SetStateUserInterfaces(_PlayerWalkingActiveSprite, _playerSlidingPassiveSprite, _playerWalkingTransform, _playerSlidingTransform);
+        
+        _playableDirector.stopped+=OnTimelineFinished;
         _playerController.OnplayerStateChanged += PlayerController_OnPlayerStateChanged;
+    }
+
+    private void OnTimelineFinished(PlayableDirector director)
+    {
+        SetStateUserInterfaces(_PlayerWalkingActiveSprite, _playerSlidingPassiveSprite, _playerWalkingTransform, _playerSlidingTransform);
     }
 
     private void PlayerController_OnPlayerStateChanged(PlayerState playerState)
