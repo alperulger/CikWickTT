@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         ChangeGameState(GameState.CutScene);
+        BackgroundMusic.Instance.PlayBackgroundMusic(true);
     }
     public void ChangeGameState(GameState gameState)
     {

@@ -13,6 +13,7 @@ public class LosePopup : MonoBehaviour
     private RectTransform _losePopupTransform;
     void OnEnable()
     {
+        BackgroundMusic.Instance.PlayBackgroundMusic(false);//Stop bg Music
         _tryAgainButton.onClick.AddListener(TryAgainButtonClicked);
         _timerText.text = _timerUI.GetFinalTime();
         _mainMenuButton.onClick.AddListener(() =>
